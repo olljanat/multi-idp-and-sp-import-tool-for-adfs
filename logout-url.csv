@@ -1,0 +1,2 @@
+entityID,logout-url
+https://idp.example.com/shibboleth,https://idp.example.com/idp/logout.jsp
