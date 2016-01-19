@@ -5,4 +5,3 @@ ADFS supports only one IDP and SP on each metadata so this script splits each ID
 
 ## Known issues:
 * Secondary Shibboleth certificates are not supported on ADFS: https://jorgequestforknowledge.wordpress.com/2014/05/
-* Metadata signature check is not yet implemented
