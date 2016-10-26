@@ -130,6 +130,16 @@ If ($ValidSignature -eq $True) {
 			If ($IncludeCustomLogoutUrl -eq $True) {
 				Add-IDPSingleLogoutServiceURL $IDPEntity $EntityIdentifier
 			}
+            
+			# Workaround to this issue: https://jorgequestforknowledge.wordpress.com/2014/05/12/automatic-metadata-exchange-between-from-shibboleth-to-adfs/
+			# Adding use="signing" to all others than last (latest) certificate
+			If ($IDPEntity.IDPSSODescriptor.KeyDescriptor.Count -gt 1) {
+				$KeyDescriptorsToFix = $IDPEntity.IDPSSODescriptor.KeyDescriptor[0..($IDPEntity.IDPSSODescriptor.KeyDescriptor.Count - 2)]
+				ForEach ($KeyDescriptor in $KeyDescriptorsToFix) {
+					$KeyDescriptor.SetAttribute("use","signing")
+				}
+			}
+            
 			Save-EntityToXMLFile $IDPEntity $TempFile $EntityIdentifier
 			If ($EntityIdentifier -ne $null) {
 				Update-ClaimsProviderTrusts $TempFile $EntityIdentifier $PrefixText
